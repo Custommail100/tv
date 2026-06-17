@@ -7,9 +7,11 @@ class GitHubAPI {
 
   // Get file from GitHub
   async getFile() {
-    const url = `${CONFIG.GITHUB_API}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}?ref=${this.config.branch}`;
+    const filePath = 'match.json'; // Explicitly set to match.json
+    const url = `${CONFIG.GITHUB_API}/repos/${this.config.owner}/${this.config.repo}/contents/${filePath}?ref=${this.config.branch}`;
 
     try {
+      console.log('Fetching from:', url);
       const response = await fetch(url, {
         headers: {
           'Authorization': `token ${this.config.token}`,
@@ -19,6 +21,7 @@ class GitHubAPI {
 
       if (!response.ok) {
         if (response.status === 404) {
+          console.warn('File not found on GitHub');
           return null;
         }
         throw new Error(`GitHub API error: ${response.status}`);
@@ -37,12 +40,21 @@ class GitHubAPI {
 
   // Update file on GitHub
   async updateFile(content, message) {
-    const url = `${CONFIG.GITHUB_API}/repos/${this.config.owner}/${this.config.repo}/contents/${this.config.filePath}`;
+    const filePath = 'match.json'; // Explicitly set to match.json
+    const url = `${CONFIG.GITHUB_API}/repos/${this.config.owner}/${this.config.repo}/contents/${filePath}`;
 
     try {
       // Get current file to get SHA
       const current = await this.getFile();
-      const sha = current ? current.sha : undefined;
+      
+      if (!current) {
+        throw new Error('Could not fetch current file SHA from GitHub. File may not exist.');
+      }
+
+      const sha = current.sha;
+
+      console.log('Updating file with SHA:', sha);
+      console.log('Content to upload:', content);
 
       const response = await fetch(url, {
         method: 'PUT',
@@ -55,15 +67,19 @@ class GitHubAPI {
           message: message || 'Update match.json',
           content: btoa(JSON.stringify(content, null, 2)),
           branch: this.config.branch,
-          ...(sha && { sha }),
+          sha: sha, // IMPORTANT: SHA is required for updates
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`GitHub API error: ${response.status}`);
+        const errorData = await response.json();
+        console.error('GitHub API Error:', errorData);
+        throw new Error(`GitHub API error: ${response.status} - ${errorData.message}`);
       }
 
-      return await response.json();
+      const result = await response.json();
+      console.log('File updated successfully:', result);
+      return result;
     } catch (error) {
       console.error('Error updating file:', error);
       throw error;
