@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Match CMS - Authentication</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+          --primary: #667eea;
+          --secondary: #764ba2;
+        }
+
+        body {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .auth-container {
+          background: white;
+          border-radius: 15px;
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+          overflow: hidden;
+          max-width: 450px;
+          width: 90%;
+        }
+
+        .auth-header {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          padding: 40px 30px;
+          text-align: center;
+        }
+
+        .auth-header h1 {
+          font-size: 2rem;
+          font-weight: 700;
+          margin-bottom: 10px;
+        }
+
+        .auth-header p {
+          margin: 0;
+          opacity: 0.9;
+        }
+
+        .auth-body {
+          padding: 40px 30px;
+        }
+
+        .form-group {
+          margin-bottom: 20px;
+        }
+
+        .form-label {
+          font-weight: 600;
+          color: #333;
+          margin-bottom: 8px;
+        }
+
+        .form-control {
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          padding: 12px 15px;
+          font-size: 0.95rem;
+        }
+
+        .form-control:focus {
+          border-color: #667eea;
+          box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+
+        .btn-auth {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+          border: none;
+          padding: 12px 30px;
+          border-radius: 8px;
+          font-weight: 600;
+          font-size: 1rem;
+          width: 100%;
+          transition: all 0.3s ease;
+          cursor: pointer;
+        }
+
+        .btn-auth:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-auth:disabled {
+          opacity: 0.7;
+          cursor: not-allowed;
+        }
+
+        .error-message {
+          background-color: #f8d7da;
+          color: #721c24;
+          padding: 12px 15px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          border-left: 4px solid #dc3545;
+          display: none;
+        }
+
+        .error-message.show {
+          display: block;
+        }
+
+        .success-message {
+          background-color: #d4edda;
+          color: #155724;
+          padding: 12px 15px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+          border-left: 4px solid #28a745;
+          display: none;
+        }
+
+        .success-message.show {
+          display: block;
+        }
+
+        .info-box {
+          background: #f0f4ff;
+          border-left: 4px solid #667eea;
+          padding: 15px;
+          border-radius: 5px;
+          margin-bottom: 20px;
+          font-size: 0.9rem;
+        }
+
+        .info-box strong {
+          color: #667eea;
+        }
+
+        .toggle-password {
+          cursor: pointer;
+        }
+
+        .input-group-text {
+          background-color: transparent;
+          border: 1px solid #ddd;
+          cursor: pointer;
+        }
+
+        .input-group-text:hover {
+          background-color: #f5f5f5;
+        }
+
+        .divider {
+          text-align: center;
+          margin: 20px 0;
+          position: relative;
+        }
+
+        .divider::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: #ddd;
+        }
+
+        .divider span {
+          background: white;
+          padding: 0 10px;
+          position: relative;
+          color: #666;
+          font-size: 0.9rem;
+        }
+
+        .switch-mode {
+          text-align: center;
+          color: #666;
+          font-size: 0.9rem;
+        }
+
+        .switch-mode a {
+          color: #667eea;
+          text-decoration: none;
+          font-weight: 600;
+          cursor: pointer;
+        }
+
+        .switch-mode a:hover {
+          text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <h1><i class="fas fa-tv"></i> Sports CMS</h1>
+            <p>Admin Dashboard</p>
+        </div>
+        <div class="auth-body">
+            <!-- Error Message -->
+            <div class="error-message" id="errorMessage"></div>
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage"></div>
+
+            <!-- Admin Authentication Form -->
+            <div id="adminAuthForm">
+                <div class="info-box">
+                    <strong>Admin Login:</strong>
+                    <p class="mb-0 mt-2 small">Enter your admin credentials to access the dashboard.</p>
+                </div>
+
+                <form id="adminLoginForm">
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" id="adminUsername" placeholder="Enter username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="adminPassword" placeholder="Enter password" required>
+                            <span class="input-group-text toggle-password" id="toggleAdminPassword">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-auth" id="adminLoginBtn">
+                        <i class="fas fa-sign-in-alt"></i> Login as Admin
+                    </button>
+                </form>
+
+                <div class="divider"><span>OR</span></div>
+
+                <button type="button" class="btn btn-outline-primary w-100" onclick="switchToGitHub()">
+                    <i class="fas fa-github"></i> Configure GitHub
+                </button>
+            </div>
+
+            <!-- GitHub Configuration Form -->
+            <div id="githubConfigForm" style="display: none;">
+                <div class="info-box">
+                    <strong>GitHub Configuration:</strong>
+                    <p class="mb-0 mt-2 small">Configure your GitHub repository to get started with the Sports Match CMS.</p>
+                </div>
+
+                <form id="githubLoginForm">
+                    <div class="form-group">
+                        <label class="form-label">GitHub Owner</label>
+                        <input type="text" class="form-control" id="owner" placeholder="e.g., Custommail100" required>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">Your GitHub username or organization name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">GitHub Repository</label>
+                        <input type="text" class="form-control" id="repo" placeholder="e.g., tv" required>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">Repository name where match.json is stored</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">GitHub Branch</label>
+                        <input type="text" class="form-control" id="branch" placeholder="main" value="main">
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">Default branch name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">File Path</label>
+                        <input type="text" class="form-control" id="filePath" placeholder="match.json" value="match.json">
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">Path to match.json in your repository</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Personal Access Token</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" id="token" placeholder="ghp_xxxxxxxxxxxxx" required>
+                            <span class="input-group-text toggle-password" id="toggleToken">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 5px;">
+                            <a href="https://github.com/settings/tokens" target="_blank">Create a token</a> with repo scope
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-auth" id="githubLoginBtn">
+                        <i class="fas fa-plug"></i> Test & Connect
+                    </button>
+                </form>
+
+                <button type="button" class="btn btn-outline-secondary w-100 mt-3" onclick="switchToAdmin()">
+                    <i class="fas fa-arrow-left"></i> Back to Admin Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_USERNAME = 'ymn10';
+        const ADMIN_PASSWORD = 'ymn10';
+
+        // Toggle Admin Password Visibility
+        document.getElementById('toggleAdminPassword').addEventListener('click', () => {
+            const input = document.getElementById('adminPassword');
+            const icon = document.querySelector('#toggleAdminPassword i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Toggle GitHub Token Visibility
+        document.getElementById('toggleToken').addEventListener('click', () => {
+            const input = document.getElementById('token');
+            const icon = document.querySelector('#toggleToken i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Switch to GitHub Form
+        function switchToGitHub() {
+            document.getElementById('adminAuthForm').style.display = 'none';
+            document.getElementById('githubConfigForm').style.display = 'block';
+        }
+
+        // Switch to Admin Form
+        function switchToAdmin() {
+            document.getElementById('adminAuthForm').style.display = 'block';
+            document.getElementById('githubConfigForm').style.display = 'none';
+            clearMessages();
+        }
+
+        // Show Error Message
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => errorDiv.classList.remove('show'), 5000);
+        }
+
+        // Show Success Message
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.classList.add('show');
+            setTimeout(() => successDiv.classList.remove('show'), 5000);
+        }
+
+        // Clear Messages
+        function clearMessages() {
+            document.getElementById('errorMessage').classList.remove('show');
+            document.getElementById('successMessage').classList.remove('show');
+        }
+
+        // Admin Login Form Handler
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearMessages();
+
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+
+            if (!username || !password) {
+                showError('Please fill all fields');
+                return;
+            }
+
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                showSuccess('Admin login successful! Redirecting...');
+                
+                // Store admin session
+                localStorage.setItem('admin_authenticated', 'true');
+                localStorage.setItem('admin_username', username);
+                localStorage.setItem('admin_login_time', new Date().toISOString());
+                
+                // Redirect to login page for GitHub config
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            } else {
+                showError('Invalid username or password');
+                document.getElementById('adminPassword').value = '';
+            }
+        });
+
+        // GitHub Login Form Handler
+        document.getElementById('githubLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearMessages();
+
+            const config = {
+                owner: document.getElementById('owner').value.trim(),
+                repo: document.getElementById('repo').value.trim(),
+                branch: document.getElementById('branch').value.trim(),
+                filePath: document.getElementById('filePath').value.trim(),
+                token: document.getElementById('token').value.trim(),
+            };
+
+            if (!config.owner || !config.repo || !config.token) {
+                showError('Please fill all required fields');
+                return;
+            }
+
+            const btn = document.getElementById('githubLoginBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...'
+
+            try {
+                // Test connection
+                const response = await fetch('https://api.github.com/user', {
+                    headers: {
+                        'Authorization': `token ${config.token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error('Invalid token or connection failed');
+                }
+
+                const userData = await response.json();
+                showSuccess(`Connected as ${userData.login}! Redirecting...`);
+
+                // Save config
+                localStorage.setItem('github_owner', config.owner);
+                localStorage.setItem('github_repo', config.repo);
+                localStorage.setItem('github_branch', config.branch);
+                localStorage.setItem('file_path', config.filePath);
+                localStorage.setItem('github_token', config.token);
+                localStorage.setItem('auth_token', 'authenticated');
+
+                // Redirect to dashboard
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                showError('Connection failed: ' + error.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-plug"></i> Test & Connect';
+            }
+        });
+
+        // Check if already authenticated
+        window.addEventListener('load', () => {
+            const token = localStorage.getItem('github_token');
+            if (token) {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>
