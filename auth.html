@@ -336,6 +336,12 @@
         function switchToGitHub() {
             document.getElementById('adminAuthForm').style.display = 'none';
             document.getElementById('githubConfigForm').style.display = 'block';
+            
+            // Pre-fill with user's values
+            document.getElementById('owner').value = 'Custommail100';
+            document.getElementById('repo').value = 'tv';
+            document.getElementById('branch').value = 'main';
+            document.getElementById('filePath').value = 'match.json';
         }
 
         // Switch to Admin Form
@@ -436,7 +442,7 @@
                 const userData = await response.json();
                 showSuccess(`Connected as ${userData.login}! Redirecting...`);
 
-                // Save config
+                // Save config to localStorage
                 localStorage.setItem('github_owner', config.owner);
                 localStorage.setItem('github_repo', config.repo);
                 localStorage.setItem('github_branch', config.branch);
