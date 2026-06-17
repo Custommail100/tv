@@ -1,0 +1,59 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "Football"
+    },
+    {
+      "id": "2",
+      "name": "Cricket"
+    }
+  ],
+  "leagues": [
+    {
+      "id": "1",
+      "category": "1",
+      "name": "FIFA World Cup"
+    },
+    {
+      "id": "2",
+      "category": "1",
+      "name": "UEFA Champions League"
+    },
+    {
+      "id": "3",
+      "category": "2",
+      "name": "ICC World Cup"
+    },
+    {
+      "id": "4",
+      "category": "2",
+      "name": "Dutch-Bangla Bank T20I Series"
+    }
+  ],
+  "matches": [
+    {
+      "id": "1",
+      "category": "1",
+      "league": "1",
+      "title": "Group Stage",
+      "teamA": {
+        "name": "Argentina",
+        "flag": "https://raw.githubusercontent.com/Custommail100/tv/main/assets/flags/argentina.png"
+      },
+      "teamB": {
+        "name": "France",
+        "flag": "https://raw.githubusercontent.com/Custommail100/tv/main/assets/flags/france.png"
+      },
+      "sources": [
+        {
+          "name": "Main",
+          "url": "https://example.com/stream.m3u8",
+          "enabled": true
+        }
+      ],
+      "start_time": "2026-07-15T20:00:00Z",
+      "finish_time": "2026-07-15T22:00:00Z"
+    }
+  ]
+}
