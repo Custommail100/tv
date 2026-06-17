@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Match CMS - Settings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3 class="mb-0">
+                    <i class="fas fa-tv"></i> Sports CMS
+                </h3>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="matches.html">
+                        <i class="fas fa-futbol"></i> Matches
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="leagues.html">
+                        <i class="fas fa-trophy"></i> Leagues
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="categories.html">
+                        <i class="fas fa-list"></i> Categories
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="settings.html">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-dark top-navbar">
+                <div class="container-fluid">
+                    <button class="btn btn-dark me-3" id="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="navbar-brand mb-0">Settings</span>
+                    <div class="ms-auto d-flex align-items-center gap-3">
+                        <button class="btn btn-dark" id="toggleDarkMode" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="container-fluid">
+                    <!-- Header -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h1 class="page-title">Settings</h1>
+                            <p class="text-muted">Configure GitHub integration and preferences.</p>
+                        </div>
+                    </div>
+
+                    <!-- GitHub Configuration -->
+                    <div class="row mb-4">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">GitHub Integration</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="settingsForm">
+                                        <div class="mb-3">
+                                            <label class="form-label">GitHub Owner</label>
+                                            <input type="text" class="form-control" id="githubOwner" placeholder="e.g., Custommail100">
+                                            <small class="text-muted">Your GitHub username or organization name</small>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">GitHub Repository</label>
+                                            <input type="text" class="form-control" id="githubRepo" placeholder="e.g., tv">
+                                            <small class="text-muted">Repository name where match.json is stored</small>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">GitHub Branch</label>
+                                            <input type="text" class="form-control" id="githubBranch" placeholder="e.g., main" value="main">
+                                            <small class="text-muted">Default branch name</small>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">File Path</label>
+                                            <input type="text" class="form-control" id="filePath" placeholder="e.g., match.json" value="match.json">
+                                            <small class="text-muted">Path to match.json in your repository</small>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">GitHub Personal Access Token</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="githubToken" placeholder="ghp_xxxxxxxxxxxxx">
+                                                <button class="btn btn-outline-secondary" type="button" id="toggleToken">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                            </div>
+                                            <small class="text-muted">
+                                                Create a token at <a href="https://github.com/settings/tokens" target="_blank">GitHub Settings</a> with repo scope
+                                            </small>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="autoSync" checked>
+                                                <label class="form-check-label" for="autoSync">
+                                                    Auto-sync with GitHub (Recommended)
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <button type="button" class="btn btn-primary" id="testConnectionBtn">
+                                            <i class="fas fa-plug"></i> Test Connection
+                                        </button>
+                                        <button type="button" class="btn btn-success" id="saveSettingsBtn">
+                                            <i class="fas fa-save"></i> Save Settings
+                                        </button>
+                                        <button type="button" class="btn btn-warning" id="logoutBtn">
+                                            <i class="fas fa-sign-out-alt"></i> Logout
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Info Sidebar -->
+                        <div class="col-lg-4">
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="mb-0">API Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Public API URL:</strong></p>
+                                    <code class="small" id="apiUrl">https://raw.githubusercontent.com/...</code>
+                                    <button class="btn btn-sm btn-outline-primary mt-2 w-100" id="copyApiBtn">
+                                        <i class="fas fa-copy"></i> Copy URL
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Help</h5>
+                                </div>
+                                <div class="card-body small">
+                                    <p><strong>Need a GitHub Token?</strong></p>
+                                    <ol class="mb-0">
+                                        <li>Go to GitHub Settings</li>
+                                        <li>Click "Developer settings"</li>
+                                        <li>Select "Personal access tokens"</li>
+                                        <li>Click "Generate new token"</li>
+                                        <li>Select "repo" scope</li>
+                                        <li>Copy and paste here</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/settings.js"></script>
+</body>
+</html>
