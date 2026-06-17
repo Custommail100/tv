@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Match CMS - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3 class="mb-0">
+                    <i class="fas fa-tv"></i> Sports CMS
+                </h3>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">
+                        <i class="fas fa-chart-line"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="matches.html">
+                        <i class="fas fa-futbol"></i> Matches
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="leagues.html">
+                        <i class="fas fa-trophy"></i> Leagues
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="categories.html">
+                        <i class="fas fa-list"></i> Categories
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="settings.html">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content" id="main-content">
+            <!-- Top Navigation -->
+            <nav class="navbar navbar-expand-lg navbar-dark top-navbar">
+                <div class="container-fluid">
+                    <button class="btn btn-dark me-3" id="toggleSidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <span class="navbar-brand mb-0">Dashboard</span>
+                    <div class="ms-auto d-flex align-items-center gap-3">
+                        <button class="btn btn-dark" id="toggleDarkMode" title="Toggle Dark Mode">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                        <div class="dropdown">
+                            <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" id="logoutBtn">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Page Content -->
+            <div class="page-content">
+                <div class="container-fluid">
+                    <!-- Header -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <h1 class="page-title">Dashboard</h1>
+                            <p class="text-muted">Welcome back! Here's your sports match overview.</p>
+                        </div>
+                    </div>
+
+                    <!-- Stats Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-list"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="totalCategories">0</h3>
+                                    <p>Total Categories</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="totalLeagues">0</h3>
+                                    <p>Total Leagues</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-futbol"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="totalMatches">0</h3>
+                                    <p>Total Matches</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-video"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <h3 id="totalSources">0</h3>
+                                    <p>Total Sources</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Match Status Overview -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="status-card upcoming">
+                                <div class="status-header">
+                                    <i class="fas fa-clock"></i>
+                                    <h4>Upcoming Matches</h4>
+                                </div>
+                                <div class="status-number" id="upcomingCount">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="status-card live">
+                                <div class="status-header">
+                                    <i class="fas fa-circle animate-pulse"></i>
+                                    <h4>Live Matches</h4>
+                                </div>
+                                <div class="status-number" id="liveCount">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="status-card finished">
+                                <div class="status-header">
+                                    <i class="fas fa-check-circle"></i>
+                                    <h4>Finished Matches</h4>
+                                </div>
+                                <div class="status-number" id="finishedCount">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Matches -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Recent Matches</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="recentMatchesContainer">
+                                        <div class="text-center text-muted">
+                                            <i class="fas fa-inbox"></i> No matches yet
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+</html>
