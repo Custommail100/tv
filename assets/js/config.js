@@ -15,6 +15,8 @@ const STORAGE_KEYS = {
   FILE_PATH: 'file_path',
   DARK_MODE: 'dark_mode',
   AUTH_TOKEN: 'auth_token',
+  ADMIN_AUTHENTICATED: 'admin_authenticated',
+  ADMIN_USERNAME: 'admin_username',
 };
 
 // Utility Functions
@@ -23,7 +25,7 @@ const Utils = {
   getAuthToken: () => {
     const token = localStorage.getItem(STORAGE_KEYS.GITHUB_TOKEN);
     if (!token) {
-      window.location.href = 'login.html';
+      window.location.href = 'auth.html';
       return null;
     }
     return token;
@@ -32,6 +34,11 @@ const Utils = {
   // Check if user is authenticated
   isAuthenticated: () => {
     return !!localStorage.getItem(STORAGE_KEYS.GITHUB_TOKEN);
+  },
+
+  // Check if admin is authenticated
+  isAdminAuthenticated: () => {
+    return localStorage.getItem(STORAGE_KEYS.ADMIN_AUTHENTICATED) === 'true';
   },
 
   // Get GitHub configuration
@@ -83,11 +90,27 @@ const Utils = {
     localStorage.removeItem(STORAGE_KEYS.GITHUB_REPO);
     localStorage.removeItem(STORAGE_KEYS.GITHUB_BRANCH);
     localStorage.removeItem(STORAGE_KEYS.FILE_PATH);
-    window.location.href = 'login.html';
+    localStorage.removeItem(STORAGE_KEYS.ADMIN_AUTHENTICATED);
+    localStorage.removeItem(STORAGE_KEYS.ADMIN_USERNAME);
+    window.location.href = 'auth.html';
   },
 };
 
 // Check authentication on page load
-if (!window.location.pathname.includes('login.html') && !Utils.isAuthenticated()) {
-  window.location.href = 'login.html';
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => {
+    // Skip auth check for auth and login pages
+    if (!window.location.pathname.includes('auth.html') && 
+        !window.location.pathname.includes('login.html') &&
+        !Utils.isAuthenticated()) {
+      window.location.href = 'auth.html';
+    }
+  });
+} else {
+  // Skip auth check for auth and login pages
+  if (!window.location.pathname.includes('auth.html') && 
+      !window.location.pathname.includes('login.html') &&
+      !Utils.isAuthenticated()) {
+    window.location.href = 'auth.html';
+  }
 }
